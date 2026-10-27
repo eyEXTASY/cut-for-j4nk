@@ -178,7 +178,6 @@ function retrigger(node, cls) {               // CSS-Animation neu starten, auch
   node.classList.add(cls);                    // … und wieder setzen → Animation startet von vorn
 }
 
-const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches; // true = Nutzer will wenig Bewegung
 const COARSE = window.matchMedia('(pointer: coarse)').matches;                 // true = Touchgerät (Finger statt Maus)
 
 
@@ -271,7 +270,6 @@ function boltPath() {
 }
 
 function strikeBolt() {
-  if (REDUCED) return;                                   // ruhige Variante: keine Blitze
   const svg = $('.hero__bolt');                          // Blitz-SVG
   $('.bolt', svg).setAttribute('d', boltPath());         // neuen Zickzack setzen
   retrigger(svg, 'is-striking');                         // Flacker-Animation starten
@@ -428,7 +426,6 @@ function bindShardPointer() {
 let heroVisible = true;                                     // wird vom IntersectionObserver aktualisiert
 
 function startGlitchLoop() {
-  if (REDUCED) return;                                      // ruhige Variante: kein Glitch
   const title = $('#hero-title');                           // Titel-Element
   const next = () => {                                      // nächsten Burst planen
     setTimeout(() => {
@@ -448,10 +445,6 @@ function startGlitchLoop() {
 // Scherben platzen raus, Glitch-Schleife startet.
 function heroIntro(charCount) {
   const hero = $('#top');                                   // Hero-Element
-  if (REDUCED) {                                            // ruhige Variante
-    hero.classList.add('is-landed');                        // sofort "gelandet", keine Effekte
-    return;
-  }
   const landAt = 150 + charCount * 55 + 600;                // ms bis der letzte Buchstabe sitzt (passt zu CSS: Delay + Dauer)
   setTimeout(() => {
     hero.classList.add('is-landed');                        // Einschlag-Animation abschalten, Scherben einblenden
@@ -509,7 +502,7 @@ function buildFlow() {
   });
   flowCards = $$('.step', list);                             // Karten merken
   flowClips = $$('.tl-clip', track);                         // Clips merken
-  if (!REDUCED) setFlowStep(0, false);                       // Start: Schritt 1 aktiv (ohne Einschlag)
+  setFlowStep(0, false);                                     // Start: Schritt 1 aktiv (ohne Einschlag)
 }
 
 function setFlowStep(idx, slam = true) {
@@ -635,7 +628,7 @@ function makeSwitch(label, value) {
   }
   wrap.append(input, track, text);                           // alles zusammensetzen
   input.addEventListener('change', () => {                   // Schalter umgelegt
-    if (input.checked && !REDUCED) retrigger(wrap, 'is-zapped'); // kleiner Funken-Effekt
+    if (input.checked) retrigger(wrap, 'is-zapped');         // kleiner Funken-Effekt
     if (chip) {                                              // Status-Kästchen aktualisieren
       chip.textContent = input.checked ? CONFIG.part.doneLabel : chip.dataset.base; // "abgehakt" oder Ursprung
       chip.classList.toggle('chip--done', input.checked);    // gelb gefüllt, wenn abgehakt
@@ -769,13 +762,7 @@ function init() {
   applyConfig();                                             // Texte/Links einsetzen (nach dem Bauen, damit auch .glitch-Texte stimmen)
   collectScenes();                                           // scroll-gesteuerte Sektionen registrieren
   observeReveals();                                          // Reveals + Hero-Sichtbarkeit
-
-  if (REDUCED) {                                             // ruhige Variante:
-    $('#top').classList.add('is-landed');                    // Scherben statisch zeigen
-    return;                                                  // keine Scroll-Engine, keine Physik, kein Glitch
-  }
-
-  measure();                                                 // Positionen messen
+  measure();                                                // Positionen messen
   bindShardPointer();                                        // Maus/Finger für Scherben
   heroIntro(charCount);                                      // Einschlag-Intro starten
   window.addEventListener('scroll', () => { scrollDirty = true; requestTick(); }, { passive: true }); // Scrollen → nächsten Frame anfordern

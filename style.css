@@ -1,7 +1,7 @@
 /* =====================================================================
    CUT FOR J4NK – style.css
    Aufbau: Tokens → Basis → globale Effekte → Sektionen von oben nach unten
-   → Hilfs-Animationen → Responsive → Reduced Motion.
+   → Hilfs-Animationen → Responsive.
    Bewegt wird fast nur über "transform" und "opacity" (läuft auf der GPU,
    bleibt flüssig auf Mittelklasse-Handys).
    ===================================================================== */
@@ -1125,36 +1125,3 @@ a { color: inherit; }
   .flow__sticky { grid-template-rows: minmax(0, 1fr) auto; padding-top: 20px; }
 }
 
-
-/* ==== REDUCED MOTION ==== */
-/* Wer im System "Bewegung reduzieren" aktiviert hat, bekommt eine ruhige
-   Variante: keine Einschläge, kein Glitch, keine Scroll-Bewegung, kein
-   Sticky. Der Ablauf wird zu einer normalen Liste mit 5 Karten. */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: .001ms !important;
-    animation-delay: 0s !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .25s !important;
-    transition-delay: 0s !important;
-  }
-  .char, .why__line, .piece { transform: none !important; }
-  .char { opacity: 1 !important; }
-  .piece { opacity: 1 !important; }
-  .thumb__label { opacity: 1 !important; }
-  .shard__glass { opacity: .6; }
-  .hero__bolt, .hero__flash { display: none; }
-  .ticker__track { animation: none !important; }
-
-  .flow { height: auto; }
-  .flow__sticky { position: static; height: auto; display: block; padding-block: clamp(80px, 14vh, 160px); }
-  .flow__num, .timeline { display: none; }
-  .flow__cards { gap: 22px; }
-  .step { grid-area: auto; visibility: visible; opacity: 1; animation: none !important; max-width: 720px; }
-
-  [data-reveal]:not(.slam):not(.crack):not(.podium):not(.chat) { transform: none !important; }
-  .crack { transform: none; }
-  .podium__bar { transform: none; }
-  .chat__msg { opacity: 1; transform: none; }
-  .glitch::before, .glitch::after { display: none; }
-}

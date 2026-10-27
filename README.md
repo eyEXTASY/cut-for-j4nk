@@ -64,16 +64,8 @@ Sobald du einen echten Wert einträgst (z. B. `value: "1. Dezember"`), zeigt die
 
 ## 2. Lokal ansehen
 
-**Variante A (einfach):** `index.html` doppelklicken.
-Hinweis: Die Seite hat eine strenge Sicherheitsregel (Content-Security-Policy), die nur eigene Dateien zulässt. Ob ein Browser das beim Öffnen per Doppelklick (`file://`) akzeptiert, ist nicht getestet. Bleibt die Seite leer oder schwarz, nimm Variante B.
-
-**Variante B (sicher):** Kleinen lokalen Server starten. Node.js ist auf diesem PC installiert. Im Projektordner ausführen:
-
-```bash
-npx --yes http-server -p 5173 -c-1
-```
-
-Danach im Browser `http://localhost:5173` öffnen. `npx` lädt dafür einmalig das Paket `http-server` aus npm herunter. Beenden mit `Strg + C`.
+`index.html` doppelklicken. Sie öffnet sich im Browser, eine Internetverbindung oder ein Server ist nicht nötig.
+Wichtig: Die vier Dateien müssen zusammen im selben Ordner liegen.
 
 ### Fehler finden
 Im Browser `F12` drücken und den Reiter **Konsole** öffnen. Rote Zeilen zeigen die Datei und die Zeilennummer an.
@@ -81,7 +73,10 @@ In `script.js` steht hinter fast jeder Zeile ein Kommentar, was sie tut. Fehlt e
 
 ---
 
-## 3. Auf GitHub Pages veröffentlichen
+## 3. Optional: Als Link teilen (GitHub Pages)
+
+Nur nötig, wenn Jank die Seite selbst über einen Link öffnen soll, z. B. auf dem Handy.
+Zum Vorzeigen per Bildschirm teilen brauchst du diesen Teil nicht.
 
 Voraussetzung: git ist installiert (das ist der Fall), dazu ein GitHub-Account (**eyEXTASY**).
 Die GitHub CLI (`gh`) brauchst du für diesen Weg nicht.
@@ -137,8 +132,7 @@ GitHub Pages aktualisiert sich danach automatisch (1 bis 2 Minuten, notfalls mit
 - **Animationen:** Vanilla JS mit **einem** zentralen `requestAnimationFrame`, der nur läuft, wenn gescrollt wird oder Scherben nachschwingen. Bewegt werden nur `transform` und `opacity`. Es gibt kein Canvas und kein GSAP.
 - **Szenen:** Scroll-Fortschritt als CSS-Variable `--p` (0 bis 1) pro Sektion. Positionen werden nur beim Laden und bei Größenänderungen gemessen, nicht beim Scrollen.
 - **Reveals:** `IntersectionObserver` setzt `.is-in`, sobald ein Element ins Bild kommt.
-- **Reduced Motion:** Wer im System „Bewegung reduzieren“ aktiviert hat, bekommt eine ruhige Variante: kein Glitch, kein Sticky, und der Ablauf erscheint als normale Liste.
-- **Datenschutz:** keine Webfonts, keine externen Skripte, keine Cookies, kein localStorage. Die Content-Security-Policy erlaubt nur eigene Dateien. Externe Links haben `rel="noopener noreferrer"`.
+- **Datenschutz:** keine Webfonts, keine externen Skripte, keine Cookies, kein localStorage. Die Seite lädt nur ihre eigenen drei Dateien. Externe Links haben `rel="noopener noreferrer"`.
 
 ---
 
